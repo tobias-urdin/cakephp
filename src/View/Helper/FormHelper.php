@@ -1024,10 +1024,6 @@ class FormHelper extends Helper
         $options = $this->_parseOptions($fieldName, $options);
         $options += ['id' => $this->_domId($fieldName)];
 
-        if (strtolower($options['type']) === 'input') {
-                throw new RuntimeException(sprintf('Invalid type "input" used for field "%s"', $fieldName));
-        }
-
         $templater = $this->templater();
         $newTemplates = $options['templates'];
 
@@ -1140,7 +1136,10 @@ class FormHelper extends Helper
      */
     protected function _getInput($fieldName, $options)
     {
-        switch ($options['type']) {
+        switch (strtolower($options['type'])) {
+            case 'input':
+                throw new RuntimeException(sprintf('Invalid type "input" used for field "%s"', $fieldName));
+                break;
             case 'select':
                 $opts = $options['options'];
                 unset($options['options']);
